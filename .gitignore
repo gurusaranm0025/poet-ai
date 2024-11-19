@@ -1,0 +1,8 @@
+bin
+datasets
+logs
+mlruns
+results
+
+*.txt
+__pycache__

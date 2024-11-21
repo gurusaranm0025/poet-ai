@@ -144,13 +144,13 @@ class DatasetC():
         print("\n Loading Train DL...")
         df = pd.read_csv(self.config.PREPROCESSED_TRAIN_SET)
         train_data = EmotionDataset(encodings=df['encoding'], am=df['am'], labels=df['label'])
-        return DataLoader(train_data, batch_size=64, shuffle=True, num_workers=8)
+        return DataLoader(train_data, batch_size=32, shuffle=True, num_workers=8)
     
     def load_get_ValDL(self) -> DataLoader:
         print("\n Loading Val DL...")
         df = pd.read_csv(self.config.PREPROCESSED_VAL_SET)
         val_data = EmotionDataset(encodings=df['encoding'], am=df['am'], labels=df['label'])
-        return DataLoader(val_data, batch_size=124, num_workers=8)
+        return DataLoader(val_data, batch_size=64, num_workers=8)
 
 def get_dataLoader(dataset: EmotionDataset) -> DataLoader:
     return DataLoader(dataset, batch_size=124, num_workers=8)

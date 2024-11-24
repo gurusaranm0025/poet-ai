@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 class Config():
     DATASET_FOLDER: str = "./datasets"
@@ -60,13 +61,28 @@ class LSTM_Config:
     POEM_COL_NAME = "poem"
     CSV_DATASET_PATH = os.path.join(DATASET_FOLDER, POEM_CSV_FILE)
     
+    CHUNK_SIZE = 1
+    
     DATASET_BATCH_SIZE = 32
     
     MODEL_FILE_NAME = "LSTM_POET.h5"
     MODEL_PATH = os.path.join(BIN_FOLDER, MODEL_FILE_NAME)
+    
+    TRAINING_HISTORY_BIN = os.path.join(BIN_FOLDER, "LSTM_HISTORY.bin")
     
     TOKENIZER_FILE_NAME = "LSTM_POET_TOKENIZER.bin"
     TOKENIZER_PATH = os.path.join(BIN_FOLDER, TOKENIZER_FILE_NAME)
     
     MAX_SEQ_FILE_NAME = "MAX_SEQ.bin"
     MAX_SEQ_PATH = os.path.join(BIN_FOLDER, MAX_SEQ_FILE_NAME)
+    
+    @staticmethod
+    def get_poem_csv_chunks_paths() -> list[str]:
+        chunks = pd.read_csv(LSTM_Config.CSV_DATASET_PATH, chunksize=LSTM_Config.CHUNK_SIZE)
+                
+        csv_chunks_paths = []
+        
+        for i, _ in enumerate(chunks):
+            csv_chunks_paths.append(os.path.join(LSTM_Config.DATASET_FOLDER, "chunks", f"{LSTM_Config.POEM_CSV_FILE.rstrip(".csv")}_{i+1}.csv"))
+        
+        return csv_chunks_paths
